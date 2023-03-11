@@ -1,23 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { getData } from "./api/actions";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from 'react';
 
 function App() {
+  const dispatch = useDispatch();
+  const [storeData,setStoreData] = useState([])
+  useEffect(()=>{
+    dispatch(getData()).then((res)=>{
+      setStoreData(res.payload.storeData)
+    });
+  })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {storeData.map((item)=>{
+        return(
+          <div>
+            <ul style={{backgroundColor:`${item.color}`}}>
+              <li>currency: {item.currency}</li>
+              <li>gender: {item.gender}</li>
+              <li>name: {item.name}</li>
+              <li>price: {item.price}</li>
+              <li>quantity: {item.quantity}</li>
+              <li>type: {item.type}</li>
+            </ul>
+          </div>
+        )
+      })}
     </div>
   );
 }
