@@ -2,31 +2,28 @@ import './App.css';
 import { getData } from "./api/actions";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
+import MediaCard from "./components/Card";
+import Grid from '@mui/material/Grid';
 
 function App() {
   const dispatch = useDispatch();
-  const [storeData,setStoreData] = useState([])
-  useEffect(()=>{
-    dispatch(getData()).then((res)=>{
+  const [storeData, setStoreData] = useState([])
+  useEffect(() => {
+    dispatch(getData()).then((res) => {
       setStoreData(res.payload.storeData)
     });
   })
   return (
     <div className="App">
-      {storeData.map((item)=>{
-        return(
-          <div>
-            <ul style={{backgroundColor:`${item.color}`}}>
-              <li>currency: {item.currency}</li>
-              <li>gender: {item.gender}</li>
-              <li>name: {item.name}</li>
-              <li>price: {item.price}</li>
-              <li>quantity: {item.quantity}</li>
-              <li>type: {item.type}</li>
-            </ul>
-          </div>
-        )
-      })}
+      <Grid style={{padding:"25px"}} container spacing={2}>
+        {storeData.map((item) => {
+          return (
+            <Grid item xs={4}>
+              <MediaCard props={item} />
+            </Grid>
+          )
+        })}
+      </Grid>
     </div>
   );
 }
